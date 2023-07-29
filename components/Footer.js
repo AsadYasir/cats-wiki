@@ -29,7 +29,7 @@ function Footer() {
         <div>
           <span>made by</span>
 
-          <a href="https://github.com/pklepa">pklepa</a>
+          <a href="https://github.com/DigitalKnight0">DigitalKnight0</a>
         </div>
         <div>
           <span>inspired by</span>

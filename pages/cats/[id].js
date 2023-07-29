@@ -14,11 +14,11 @@ import { motion } from 'framer-motion';
 import FadeInWhenVisible from '../../components/AnimationWrappers/FadeInWhenVisible';
 
 export default function Cat({ data }) {
-  const [cat] = data[0].breeds;
+  const cat = data.breeds
   const [imageToDisplay, setImageToDisplay] = useState();
   const [showModal, setShowModal] = useState(false);
 
-  const images = data.map((x) => {
+  const images = data.images.map((x) => {
     return { url: x.url, width: x.width, height: x.height };
   });
 
@@ -40,12 +40,12 @@ export default function Cat({ data }) {
         <div className="intro-container">
           <HeroImgWrapper
             onClick={() => {
-              setImageToDisplay(images[0].url);
+              setImageToDisplay(images[0] ? images[0].url : "");
               setShowModal(true);
             }}
           >
             <Image
-              src={images[0].url}
+              src={images[0] ? images[0].url : ""}
               className="main-img"
               alt="Featured image of the breed"
               layout="fill"
@@ -163,13 +163,19 @@ export default function Cat({ data }) {
 
 // Fetches API data before Next generates the page
 export async function getStaticProps({ params }) {
-  const req = await fetch(
+  const ImgReq = await fetch(
     `https://api.thecatapi.com/v1/images/search?breed_id=${params.id}&limit=9`
   );
-  const data = await req.json();
-
+  const imgdata = await ImgReq.json();
+  const breedReq = await fetch(
+    `https://api.thecatapi.com/v1/breeds/${params.id}`
+  ) 
+  const breeddata = await breedReq.json()
   return {
-    props: { data: data },
+    props: { data: {
+      images: imgdata,
+      breeds: breeddata
+    } },
   };
 }
 
@@ -179,11 +185,9 @@ export async function getStaticPaths() {
     `https://api.thecatapi.com/v1/breeds?api_key=${process.env.CAT_API_KEY}`
   );
   const data = await req.json();
-
   const paths = data.map((cat) => {
     return { params: { id: cat.id } };
-  });
-
+  })
   return {
     paths,
     fallback: false,
