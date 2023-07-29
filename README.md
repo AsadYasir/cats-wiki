@@ -4,8 +4,6 @@
 
 Wiki style application to visualize a variety of cat breeds data obtained from [TheCatAPI](https://docs.thecatapi.com/).
 
-> See it live on [https://cat-wiki.pklepa.vercel.app/](https://cat-wiki.pklepa.vercel.app/)
-
 ### Screenshots
 
 #### home page
